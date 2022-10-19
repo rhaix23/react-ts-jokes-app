@@ -21,6 +21,7 @@ const useStyles = createStyles((theme) => ({
   content: {
     position: "relative",
     zIndex: 1,
+    marginTop: 140,
 
     [theme.fn.smallerThan("sm")]: {
       paddingTop: 120,
@@ -53,15 +54,8 @@ export const NotFound = () => {
     <Container className={classes.root}>
       <div className={classes.inner}>
         <div className={classes.content}>
-          <Title className={classes.title} color="white">
-            Nothing to see here
-          </Title>
-          <Text
-            color="white"
-            size="lg"
-            align="center"
-            className={classes.description}
-          >
+          <Title className={classes.title}>Nothing to see here</Title>
+          <Text size="lg" align="center" className={classes.description}>
             Page you are trying to open does not exist. You may have mistyped
             the address, or the page has been moved to another URL.
           </Text>
