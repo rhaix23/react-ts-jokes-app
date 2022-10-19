@@ -5,7 +5,7 @@ interface ILink {
 
 export const navLinks: ILink[] = [
   {
-    link: "https://github.com/",
+    link: "https://github.com/rhaix23/react-ts-jokes-app",
     label: "Github",
   },
 ];
