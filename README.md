@@ -1,6 +1,6 @@
 # Jokes Application
 
-This is a simple application that fetches a list of jokes from an external API. It features many filtering options to help users customize the fetched jokes.
+This is a simple application that fetches a list of jokes from an [external API](https://sv443.net/jokeapi/v2/). It features many filtering options to help users customize the fetched jokes.
 
 Link: https://react-ts-jokes-app.vercel.app/
 
