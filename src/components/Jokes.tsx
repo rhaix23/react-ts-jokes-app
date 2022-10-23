@@ -1,10 +1,9 @@
 import { SimpleGrid } from "@mantine/core";
-import React from "react";
-import { IJoke } from "../pages/Home";
+import { ISingleJoke, ITwoPartJoke } from "../types";
 import { Joke } from "./Joke";
 
 interface IProps {
-  jokes: IJoke[];
+  jokes: (ISingleJoke | ITwoPartJoke)[];
 }
 
 export const Jokes = ({ jokes }: IProps) => {

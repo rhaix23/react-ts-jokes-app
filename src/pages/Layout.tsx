@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { Container, createStyles } from "@mantine/core";
-import { Header } from "../components";
+import { Footer, Header } from "../components";
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -14,9 +14,10 @@ export const Layout = () => {
 
   return (
     <div className={classes.container}>
-      <Container py={32}>
+      <Container py={32} sx={{ display: "flex", flexDirection: "column" }}>
         <Header />
         <Outlet />
+        <Footer />
       </Container>
     </div>
   );

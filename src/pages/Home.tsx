@@ -6,29 +6,26 @@ import {
   Grid,
   Group,
   Loader,
+  Paper,
   TextInput,
 } from "@mantine/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { IoIosOptions, IoIosSend, IoIosAlert } from "react-icons/io";
-import { Jokes, Settings } from "../components";
-
-export interface IJoke {
-  id: number;
-  type: string;
-  joke?: string;
-  setup?: string;
-  delivery?: string;
-}
+import {
+  CategoryFilter,
+  FlagsFilter,
+  Jokes,
+  LanguageFilter,
+  TypeFilter,
+} from "../components";
+import { ISingleJoke, ITwoPartJoke } from "../types";
 
 export const Home = () => {
-  // Jokes & Status
-  const [jokes, setJokes] = useState<IJoke[]>([]);
+  const [jokes, setJokes] = useState<(ISingleJoke | ITwoPartJoke)[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [toggleSettings, setToggleSettings] = useState(true);
-
-  // Additional Settings
+  const [toggleSettings, setToggleSettings] = useState(false);
   const [search, setSearch] = useState("");
   const [allCategories, setAllCategories] = useState(true);
   const [categories, setCategories] = useState<string[]>([]);
@@ -42,7 +39,7 @@ export const Home = () => {
 
     const LIMIT = 9; // amount of jokes to fetch (max 10)
 
-    url = allCategories ? url + "Any" : url + categories.join(","); // THIS MUST BE THE FIRST PARAMETER!
+    url = allCategories ? url + "Any" : url + categories.join(","); // Must be the first parameter
 
     url += `?amount=${LIMIT}`;
 
@@ -75,10 +72,10 @@ export const Home = () => {
     const url = setParams("https://v2.jokeapi.dev/joke/");
     setIsLoading(true);
     const response = await axios.get(url);
-    setIsLoading(false);
     const { jokes, error } = response.data;
     setErrorMessage(error ? response.data.causedBy[0] : "");
     setJokes(jokes);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -86,78 +83,99 @@ export const Home = () => {
   }, []);
 
   return (
-    <section>
-      <Container>
-        <Grid>
-          <Grid.Col xs={12} sm={10}>
-            <TextInput
-              placeholder="Search for a joke that contains this search string"
-              size="sm"
-              sx={{ width: "100%" }}
-              value={search}
-              onChange={(e) => setSearch(e.currentTarget.value)}
-            />
-          </Grid.Col>
-          <Grid.Col xs={12} sm={2}>
-            <Button
-              size="sm"
-              color="lime"
-              leftIcon={<IoIosOptions />}
-              onClick={() => setToggleSettings((state) => !state)}
-              fullWidth
+    <section style={{ minHeight: "80vh" }}>
+      {isLoading ? (
+        <Group position="center">
+          <Loader size="xl" color="#fff" />
+        </Group>
+      ) : (
+        <Container>
+          <Grid>
+            <Grid.Col xs={12} sm={10}>
+              <TextInput
+                placeholder="Search for a joke that contains this search string"
+                size="sm"
+                sx={{ width: "100%" }}
+                value={search}
+                onChange={(e) => setSearch(e.currentTarget.value)}
+              />
+            </Grid.Col>
+            <Grid.Col xs={12} sm={2}>
+              <Button
+                size="sm"
+                color="lime"
+                leftIcon={<IoIosOptions />}
+                onClick={() => setToggleSettings((state) => !state)}
+                fullWidth
+              >
+                Settings
+              </Button>
+            </Grid.Col>
+          </Grid>
+
+          {toggleSettings && (
+            <Paper
+              shadow="sm"
+              p="md"
+              mt={16}
+              sx={{
+                backgroundColor: "#82c91e",
+                display: "flex",
+                flexWrap: "wrap",
+              }}
             >
-              Settings
-            </Button>
-          </Grid.Col>
-        </Grid>
+              <CategoryFilter
+                allCategories={allCategories}
+                setAllCategories={setAllCategories}
+                categories={categories}
+                setCategories={setCategories}
+              />
 
-        {!toggleSettings && (
-          <Settings
-            allCategories={allCategories}
-            setAllCategories={setAllCategories}
-            categories={categories}
-            setCategories={setCategories}
-            type={type}
-            setType={setType}
-            safeMode={safeMode}
-            setSafeMode={setSafeMode}
-            blacklistFlags={blacklistFlags}
-            setBlacklistFlags={setBlacklistFlags}
-            language={language}
-            setLanguage={setLanguage}
-          />
-        )}
-        <Button
-          size="sm"
-          color="green"
-          leftIcon={<IoIosSend />}
-          disabled={isLoading}
-          onClick={fetchJokes}
-          mt={16}
-          fullWidth
-        >
-          Fetch Jokes
-        </Button>
+              <TypeFilter type={type} setType={setType} />
 
-        <Divider my={16} />
+              <FlagsFilter
+                safeMode={safeMode}
+                setSafeMode={setSafeMode}
+                blacklistFlags={blacklistFlags}
+                setBlacklistFlags={setBlacklistFlags}
+              />
 
-        {isLoading ? (
-          <Group position="center">
-            <Loader size="xl" color="yellow" />
-          </Group>
-        ) : errorMessage ? (
-          <Alert
-            icon={<IoIosAlert size={16} />}
-            title="Bummer!"
-            color="red"
-            variant="filled"
+              <LanguageFilter language={language} setLanguage={setLanguage} />
+            </Paper>
+          )}
+
+          <Button
+            size="sm"
+            color="green"
+            leftIcon={<IoIosSend />}
+            disabled={isLoading}
+            onClick={fetchJokes}
+            mt={16}
+            fullWidth
           >
-            {errorMessage}
-          </Alert>
-        ) : (
-          <Jokes jokes={jokes} />
-        )}
-      </Container>
+            Fetch Jokes
+          </Button>
+
+          <Divider my={16} />
+
+          {isLoading ? (
+            <Group position="center">
+              <Loader size="xl" color="yellow" />
+            </Group>
+          ) : errorMessage ? (
+            <Alert
+              icon={<IoIosAlert size={16} />}
+              title="Bummer!"
+              color="red"
+              variant="filled"
+            >
+              {errorMessage}
+            </Alert>
+          ) : (
+            <Jokes jokes={jokes} />
+          )}
+        </Container>
+      )}
     </section>
   );
 };

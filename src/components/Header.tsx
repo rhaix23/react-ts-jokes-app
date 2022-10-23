@@ -1,11 +1,9 @@
-import { useState } from "react";
 import {
   createStyles,
   Header,
   Container,
   Group,
   Burger,
-  Title,
   Transition,
   Paper,
   Image,
@@ -23,6 +21,7 @@ const useStyles = createStyles((theme) => ({
     zIndex: 1,
     background: "transparent",
     border: "none",
+    margin: "1rem",
   },
 
   dropdown: {

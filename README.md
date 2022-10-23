@@ -13,7 +13,7 @@ Link: https://react-ts-jokes-app.vercel.app/
 
 ## Insights
 
-This application was the first one I made using Typescript and React. The main objective in creating this application was to implement and consolidate my knowledge on basics of Typescript. Through this project, I was able to play around with types, using interfaces to define the shape of objects, and passing props.
+This application was the first one I made using Typescript and React. The main objective in creating this application was to implement and consolidate my knowledge on the basics of Typescript and its usage with React. Through this project, I was able to play around with types, using interfaces to define the shape of objects, and passing props.
 
 ## Technologies & Tools Used
 
@@ -21,9 +21,3 @@ This application was the first one I made using Typescript and React. The main o
 - Typescript
 - Vite
 - Vercel
-
-## Sample Images
-
-![This is an image](https://res.cloudinary.com/dtyzbmtlz/image/upload/v1666192103/Screenshot_20221019_230731_rmeo2p.png)
-
-![This is an image](https://res.cloudinary.com/dtyzbmtlz/image/upload/v1666192103/Screenshot_20221019_230721_ylhxs8.png)

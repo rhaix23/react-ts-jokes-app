@@ -1,14 +1,39 @@
-import { Button, Paper, Text, ThemeIcon, Transition } from "@mantine/core";
+import { Button, Paper, Text, Transition } from "@mantine/core";
 import { useState } from "react";
-import { IJoke } from "../pages/Home";
 import { GiClick } from "react-icons/gi";
+import { ISingleJoke, ITwoPartJoke } from "../types";
 
 interface IProps {
-  joke: IJoke;
+  joke: ISingleJoke | ITwoPartJoke;
 }
 
 export const Joke = ({ joke }: IProps) => {
   const [opened, setOpened] = useState(false);
+
+  const displayJoke =
+    "setup" in joke ? (
+      <>
+        <Transition
+          mounted={!opened}
+          transition="slide-down"
+          duration={400}
+          timingFunction="ease-in-out"
+        >
+          {(styles) => <Text style={styles}>{joke.setup}</Text>}
+        </Transition>
+
+        <Transition
+          mounted={opened}
+          transition="slide-up"
+          duration={400}
+          timingFunction="ease-in-out"
+        >
+          {(styles) => <Text style={styles}>{joke.delivery}</Text>}
+        </Transition>
+      </>
+    ) : (
+      <Text>{joke.joke}</Text>
+    );
 
   return (
     <Paper
@@ -25,29 +50,8 @@ export const Joke = ({ joke }: IProps) => {
         justifyContent: "space-between",
       }}
     >
-      {joke.type === "twopart" ? (
-        <>
-          <Transition
-            mounted={!opened}
-            transition="slide-down"
-            duration={400}
-            timingFunction="ease-in-out"
-          >
-            {(styles) => <Text style={styles}>{joke.setup}</Text>}
-          </Transition>
+      {displayJoke}
 
-          <Transition
-            mounted={opened}
-            transition="slide-up"
-            duration={400}
-            timingFunction="ease-in-out"
-          >
-            {(styles) => <Text style={styles}>{joke.delivery}</Text>}
-          </Transition>
-        </>
-      ) : (
-        <Text>{joke.joke}</Text>
-      )}
       {joke.type === "twopart" && (
         <Button size="sm" leftIcon={<GiClick />} color="lime">
           {opened ? "Hide" : "Show Second Part"}
